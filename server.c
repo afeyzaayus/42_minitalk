@@ -14,14 +14,14 @@
 #include "ft_printf/ft_printf.h"
 #include "libft/libft.h"
 #include <unistd.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 static int g_server = 0;
 
 static void	handle_message(int signal)
 {
 	static char	c = 0;
-	static char	i = 0;
+	static int	i = 0;
 
 	c = (c << 1) & ~1;
 	if (signal == SIGUSR1)
@@ -29,7 +29,7 @@ static void	handle_message(int signal)
 	i++;
 	if (i == 8)
 	{
-		write(1, &c, 1);
+		ft_printf("%c", c);
 		i = 0;
 		if (c == '\0')
 			g_server = 1;
@@ -43,7 +43,7 @@ static void	handle_signal(int signal, siginfo_t *info, void *context)
 	if (g_server == 1)
 	{
 		kill(info->si_pid, SIGUSR2);
-		write(1, "\n", 1);
+		ft_printf("\n");
 		g_server = 0;
 	}
 	else
@@ -55,8 +55,8 @@ int	main(void)
 	struct sigaction	sa;
 
 	ft_printf("\nSERVER PID: %d\n", getpid());
-	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handle_signal;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
