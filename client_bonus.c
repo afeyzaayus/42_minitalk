@@ -61,7 +61,7 @@ static void	detect_signal(int signal)
 		g_client = 1;
 	else if (signal == SIGUSR2)
 	{
-		//ft_printf("The message is received.\n");
+		ft_printf("The message is received.\n");
 		exit(0);
 	}
 }

@@ -1,8 +1,14 @@
-SRC_CLIENT = client.c
-SRC_SERVER = server.c
+CLIENT = client.c
+SERVER = server.c
 
-OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
-OBJ_SERVER = $(SRC_SERVER:.c=.o)
+CLIENT_BONUS = client_bonus.c
+SERVER_BONUS = server_bonus.c
+
+OBJ_CLIENT = $(CLIENT:.c=.o)
+OBJ_SERVER = $(SERVER:.c=.o)
+
+OBJ_CLIENT_B = $(CLIENT_BONUS:.c=.o)
+OBJ_SERVER_B = $(SERVER_BONUS:.c=.o)
 
 EXE_CLIENT = client
 EXE_SERVER = server
@@ -29,11 +35,17 @@ mandatory:		$(OBJ_CLIENT) $(OBJ_SERVER) $(FT_PRINTF) $(LIBFT)
 				@$(CC) $(CFLAGS) $(OBJ_SERVER) $(FT_PRINTF) $(LIBFT) -o $(EXE_SERVER)
 				@echo "Created mandatory part."
 
+bonus:			$(OBJ_CLIENT_B) $(OBJ_SERVER_B) $(FT_PRINTF) $(LIBFT)
+				@$(CC) $(CFLAGS) $(OBJ_CLIENT_B) $(FT_PRINTF) $(LIBFT) -o $(EXE_CLIENT)
+				@$(CC) $(CFLAGS) $(OBJ_SERVER_B) $(FT_PRINTF) $(LIBFT) -o $(EXE_SERVER)
+				@echo "Created bonus part."
 clean:
 				@make -C $(LIBFT_PATH) clean
 				@make -C $(FT_PRINTF_PATH) clean
 				@rm -rf $(OBJ_CLIENT)
+				@rm -rf $(OBJ_CLIENT_B)
 				@rm -rf $(OBJ_SERVER)
+				@rm -rf $(OBJ_SERVER_B)
 
 fclean: clean
 				@make -C $(LIBFT_PATH) fclean
@@ -44,4 +56,4 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY: all fclean clean re
+.PHONY: all fclean clean re 
