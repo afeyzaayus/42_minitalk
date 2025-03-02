@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aserbest <aserbest@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 17:35:22 by aserbest          #+#    #+#             */
+/*   Updated: 2025/02/25 17:51:20 by aserbest         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 #include "ft_printf/ft_printf.h"
 #include "libft/libft.h"
 #include <unistd.h>
-//#include <stdlib.h>
 
 static int	g_client = 0;
 
@@ -18,41 +29,43 @@ static int	ft_isnumber(char *str)
 	return (1);
 }
 
-static void send_end_of_data(int pid)
+static void	send_end_of_data(int pid)
 {
-    int i = 7;
-    while (i >= 0)
-    {
-        kill(pid, SIGUSR2);
-        while (g_client == 0)
-            pause();
-        g_client = 0;
-        i--;
-    }
+	int	i;
+
+	i = 7;
+	while (i >= 0)
+	{
+		kill(pid, SIGUSR2);
+		while (g_client == 0)
+			pause();
+		g_client = 0;
+		i--;
+	}
 }
 
-static void send_message(int pid, char *str)
+static void	send_data(int pid, char *str)
 {
-    int i;
+	int	i;
 
-    i = 7;
-    while (*str)
-    {
-        while (i >= 0)
-        {
-            if ((*str >> i) & 1)
-                kill(pid, SIGUSR1);
-            else
-                kill(pid, SIGUSR2);
-            while (g_client == 0)
-                pause();
-            g_client = 0;
-            i--;
-        }
-        str++;
-        i = 7;
-    }
-    send_end_of_data(pid);
+	i = 7;
+	while (*str)
+	{
+		while (i >= 0)
+		{
+			if ((*str >> i) & 1)
+				kill(pid, SIGUSR1);
+			else
+				kill(pid, SIGUSR2);
+			while (g_client == 0)
+				pause();
+			g_client = 0;
+			i--;
+		}
+		str++;
+		i = 7;
+	}
+	send_end_of_data(pid);
 }
 
 static void	detect_signal(int signal)
@@ -60,16 +73,13 @@ static void	detect_signal(int signal)
 	if (signal == SIGUSR1)
 		g_client = 1;
 	else if (signal == SIGUSR2)
-	{
-		//ft_printf("The message is received.\n");
 		exit(0);
-	}
 }
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	sa;
-	int				pid;
+	int						pid;
+	struct sigaction		sa;
 
 	if (argc != 3)
 	{
@@ -87,6 +97,6 @@ int	main(int argc, char **argv)
 	sa.sa_flags = 0;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	send_message(pid, argv[2]);
+	send_data(pid, argv[2]);
 	return (0);
 }

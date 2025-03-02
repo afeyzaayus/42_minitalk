@@ -6,17 +6,15 @@
 /*   By: aserbest <aserbest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:43:03 by aserbest          #+#    #+#             */
-/*   Updated: 2025/02/21 13:08:22 by aserbest         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:31:43 by aserbest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "ft_printf/ft_printf.h"
-#include "libft/libft.h"
 #include <unistd.h>
-//#include <stdlib.h>
 
-static int g_server = 0;
+static int	g_server = 0;
 
 static void	handle_message(int signal)
 {
@@ -25,7 +23,7 @@ static void	handle_message(int signal)
 
 	c = (c << 1) & ~1;
 	if (signal == SIGUSR1)
-    	c |= 1;
+		c |= 1;
 	i++;
 	if (i == 8)
 	{
@@ -64,4 +62,3 @@ int	main(void)
 		pause();
 	return (0);
 }
-

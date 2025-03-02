@@ -24,21 +24,23 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: mandatory
 
+
+mandatory:		$(OBJ_CLIENT) $(OBJ_SERVER) $(FT_PRINTF) $(LIBFT)
+				$(CC) $(CFLAGS) $(OBJ_CLIENT) $(FT_PRINTF) $(LIBFT) -o $(EXE_CLIENT)
+				$(CC) $(CFLAGS) $(OBJ_SERVER) $(FT_PRINTF) $(LIBFT) -o $(EXE_SERVER)
+				echo "Created mandatory part."
+
 $(LIBFT):
 				@make -C $(LIBFT_PATH)
 
 $(FT_PRINTF):
 				@make -C $(FT_PRINTF_PATH)
 
-mandatory:		$(OBJ_CLIENT) $(OBJ_SERVER) $(FT_PRINTF) $(LIBFT)
-				@$(CC) $(CFLAGS) $(OBJ_CLIENT) $(FT_PRINTF) $(LIBFT) -o $(EXE_CLIENT)
-				@$(CC) $(CFLAGS) $(OBJ_SERVER) $(FT_PRINTF) $(LIBFT) -o $(EXE_SERVER)
-				@echo "Created mandatory part."
-
 bonus:			$(OBJ_CLIENT_B) $(OBJ_SERVER_B) $(FT_PRINTF) $(LIBFT)
-				@$(CC) $(CFLAGS) $(OBJ_CLIENT_B) $(FT_PRINTF) $(LIBFT) -o $(EXE_CLIENT)
-				@$(CC) $(CFLAGS) $(OBJ_SERVER_B) $(FT_PRINTF) $(LIBFT) -o $(EXE_SERVER)
-				@echo "Created bonus part."
+				$(CC) $(CFLAGS) $(OBJ_CLIENT_B) $(FT_PRINTF) $(LIBFT) -o $(EXE_CLIENT)
+				$(CC) $(CFLAGS) $(OBJ_SERVER_B) $(FT_PRINTF) $(LIBFT) -o $(EXE_SERVER)
+				echo "Created bonus part."
+
 clean:
 				@make -C $(LIBFT_PATH) clean
 				@make -C $(FT_PRINTF_PATH) clean
